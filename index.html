@@ -2,22 +2,35 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vercel Test Page</title>
+    <title>J1 Bクラス 応援サイト</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #fafafa; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eaeaea; }
-        h1 { color: #000; margin-bottom: 10px; }
-        p { color: #666; }
-        .success-badge { display: inline-block; background: #0070f3; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 20px; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; }
+        .team-list { list-style: none; padding: 0; }
+        .team-item { background: #fff; border: 1px solid #ddd; margin-bottom: 10px; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .rank { font-weight: bold; color: #555; font-size: 1.2rem; }
+        .badge-relegation { background: #ff5252; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+        p.info { font-size: 0.9rem; color: #666; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="success-badge">Deploy Success!</div>
-        <h1>Vercel接続テスト</h1>
-        <p>このページが表示されていれば、連携はバッチリです！</p>
-        <p>これからここを自由に書き換えていきましょう。</p>
+    <div class="container">
+        <h1>J1リーグ：激闘のBクラス</h1>
+        <p>2024年シーズン、20チーム体制のJ1で熾烈な戦いを繰り広げる中位〜下位チームをピックアップ。</p>
+        
+        <ul class="team-list">
+            <li class="team-item"><span class="rank">11位〜</span> <span>サガン鳥栖 / 湘南ベルマーレ 等</span></li>
+            <li class="team-item"><span class="rank">下位3チーム</span> <span class="badge-relegation">J2自動降格圏</span></li>
+        </ul>
+
+        <div class="info">
+            <h3>📊 今シーズンのルール</h3>
+            <ul>
+                <li>全20クラブによるホーム＆アウェイ戦</li>
+                <li>下位3クラブ（18位・19位・20位）がJ2へ自動降格</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
