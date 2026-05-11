@@ -3,1241 +3,516 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>J1B クラス公式サイト</title>
+<title>J1B ホーム | 中学1年B組 公式サイト</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --white: #ffffff;
-    --off-white: #f8f7f4;
-    --cream: #f2ede6;
-    --ink: #1a1714;
-    --ink-light: #5a554e;
-    --ink-muted: #9a9188;
-    --accent: #2d6a4f;
-    --accent-light: #e8f4ef;
-    --accent-mid: #74c69d;
-    --gold: #e9c46a;
-    --coral: #e76f51;
-    --sky: #4cc9f0;
-    --border: rgba(26,23,20,0.08);
-    --border-mid: rgba(26,23,20,0.14);
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
-    --radius: 12px;
-    --radius-lg: 20px;
-    --font-display: 'DM Serif Display', serif;
-    --font-body: 'Noto Sans JP', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: var(--font-body);
-    background: var(--white);
-    color: var(--ink);
-    line-height: 1.7;
-    font-size: 15px;
-    overflow-x: hidden;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2.5rem;
-    height: 64px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .nav-brand {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none; color: var(--ink);
-  }
-
-  .nav-badge {
-    width: 36px; height: 36px; border-radius: 8px;
-    background: var(--ink);
-    color: var(--white);
-    font-family: var(--font-mono);
-    font-size: 13px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    letter-spacing: -0.5px;
-  }
-
-  .nav-title { font-size: 14px; font-weight: 500; letter-spacing: 0.02em; }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 0;
-    list-style: none;
-  }
-
-  .nav-links a {
-    display: block; padding: 0 1rem;
-    font-size: 13px; font-weight: 400; color: var(--ink-light);
-    text-decoration: none; letter-spacing: 0.02em;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-
-  .nav-links a:hover { color: var(--accent); }
-
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: grid; grid-template-columns: 1fr 1fr;
-    padding-top: 64px;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 5rem 3rem 5rem 5rem;
-    position: relative;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .hero-eyebrow::before {
-    content: ''; width: 24px; height: 1px; background: var(--accent);
-  }
-
-  .hero-h1 {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 5vw, 5rem);
-    line-height: 1.1; letter-spacing: -0.02em;
-    color: var(--ink);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-h1 em {
-    font-style: italic; color: var(--accent);
-  }
-
-  .hero-desc {
-    font-size: 16px; color: var(--ink-light); line-height: 1.8;
-    max-width: 420px; margin-bottom: 2.5rem;
-  }
-
-  .hero-stats {
-    display: flex; gap: 2.5rem;
-  }
-
-  .hero-stat-num {
-    font-family: var(--font-mono);
-    font-size: 2rem; font-weight: 700; color: var(--ink);
-    line-height: 1;
-  }
-
-  .hero-stat-label {
-    font-size: 11px; color: var(--ink-muted);
-    letter-spacing: 0.05em; margin-top: 4px;
-  }
-
-  .hero-right {
-    background: var(--off-white);
-    position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .hero-visual {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .hero-grid-bg {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-
-  .hero-card-stack {
-    position: relative; z-index: 2;
-    display: flex; flex-direction: column; gap: 12px;
-    padding: 2rem;
-  }
-
-  .info-card {
-    background: var(--white);
-    border: 0.5px solid var(--border-mid);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-    box-shadow: var(--shadow-sm);
-    min-width: 300px;
-    position: relative; overflow: hidden;
-  }
-
-  .info-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px;
-  }
-
-  .info-card.green::before { background: var(--accent); }
-  .info-card.gold::before { background: var(--gold); }
-  .info-card.coral::before { background: var(--coral); }
-
-  .card-label {
-    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--ink-muted);
-    margin-bottom: 6px;
-  }
-
-  .card-value {
-    font-size: 18px; font-weight: 500; color: var(--ink);
-  }
-
-  .card-sub {
-    font-size: 12px; color: var(--ink-muted); margin-top: 2px;
-  }
-
-  /* ── SECTIONS ── */
-  section { padding: 6rem 5rem; }
-
-  .section-tag {
-    font-family: var(--font-mono);
-    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--ink-muted); margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .section-tag::before {
-    content: ''; width: 16px; height: 1px; background: var(--ink-muted);
-  }
-
-  .section-h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.5vw, 3.2rem);
-    line-height: 1.15; letter-spacing: -0.02em;
-    color: var(--ink); margin-bottom: 1rem;
-  }
-
-  .section-lead {
-    font-size: 16px; color: var(--ink-light); line-height: 1.8;
-    max-width: 560px; margin-bottom: 3.5rem;
-  }
-
-  /* ── MEMBERS ── */
-  #members { background: var(--white); }
-
-  .members-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-  }
-
-  .member-card {
-    border: 0.5px solid var(--border-mid);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    background: var(--white);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    cursor: default;
-    position: relative; overflow: hidden;
-  }
-
-  .member-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--accent-mid);
-  }
-
-  .member-avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 16px; font-weight: 700;
-    margin-bottom: 12px;
-  }
-
-  .member-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-  .member-role { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.04em; }
-
-  .member-hobby {
-    margin-top: 12px; padding-top: 12px;
-    border-top: 0.5px solid var(--border);
-    font-size: 12px; color: var(--ink-light);
-  }
-
-  .member-number {
-    position: absolute; top: 12px; right: 14px;
-    font-family: var(--font-mono); font-size: 10px;
-    color: var(--ink-muted); letter-spacing: 0.05em;
-  }
-
-  /* ── SCHEDULE ── */
-  #schedule { background: var(--off-white); }
-
-  .schedule-layout {
-    display: grid; grid-template-columns: 1fr 2fr; gap: 3rem;
-    align-items: start;
-  }
-
-  .schedule-aside {}
-
-  .schedule-filters {
-    display: flex; flex-direction: column; gap: 6px;
-    margin-bottom: 2rem;
-  }
-
-  .filter-btn {
-    padding: 8px 14px; border: 0.5px solid var(--border-mid);
-    border-radius: 8px; background: var(--white);
-    font-family: var(--font-body); font-size: 13px;
-    color: var(--ink-light); cursor: pointer;
-    text-align: left; transition: all 0.15s;
-  }
-
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--ink); color: var(--white); border-color: var(--ink);
-  }
-
-  .timetable {
-    background: var(--white); border-radius: var(--radius-lg);
-    border: 0.5px solid var(--border-mid);
-    overflow: hidden;
-  }
-
-  .timetable-header {
-    display: grid; grid-template-columns: 60px repeat(5, 1fr);
-    border-bottom: 0.5px solid var(--border-mid);
-  }
-
-  .timetable-header > div {
-    padding: 12px 8px; text-align: center;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
-    color: var(--ink-muted);
-  }
-
-  .timetable-row {
-    display: grid; grid-template-columns: 60px repeat(5, 1fr);
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .timetable-row:last-child { border-bottom: none; }
-
-  .time-cell {
-    padding: 14px 8px; text-align: center;
-    font-family: var(--font-mono); font-size: 10px;
-    color: var(--ink-muted); border-right: 0.5px solid var(--border);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  }
-
-  .time-period { font-size: 14px; font-weight: 700; color: var(--ink-light); }
-
-  .subject-cell {
-    padding: 10px 8px; text-align: center;
-    font-size: 12px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 4px;
-    min-height: 56px;
-  }
-
-  .subject-name { font-weight: 500; font-size: 13px; }
-  .subject-room { font-size: 10px; color: var(--ink-muted); }
-
-  .subj-jp { background: #fff8f0; }
-  .subj-math { background: #f0f4ff; }
-  .subj-en { background: #f0fff4; }
-  .subj-sci { background: #fff0f0; }
-  .subj-soc { background: #fffff0; }
-  .subj-pe { background: #f0f8ff; }
-  .subj-music { background: #fff0f8; }
-  .subj-art { background: #f8f0ff; }
-  .subj-tech { background: #f0ffff; }
-  .subj-home { background: #fff5f0; }
-  .subj-moral { background: #f5fff0; }
-  .subj-hr { background: #fafafa; }
-
-  /* ── NEWS ── */
-  #news { background: var(--white); }
-
-  .news-grid {
-    display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;
-  }
-
-  .news-featured {
-    background: var(--off-white);
-    border-radius: var(--radius-lg);
-    padding: 2.5rem;
-    border: 0.5px solid var(--border);
-    position: relative; overflow: hidden;
-  }
-
-  .news-featured-tag {
-    display: inline-block; padding: 4px 10px;
-    border-radius: 99px; background: var(--accent); color: var(--white);
-    font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
-    text-transform: uppercase; margin-bottom: 1rem;
-  }
-
-  .news-featured-title {
-    font-family: var(--font-display); font-size: 1.8rem;
-    line-height: 1.25; color: var(--ink); margin-bottom: 1rem;
-  }
-
-  .news-featured-body {
-    font-size: 14px; color: var(--ink-light); line-height: 1.8; margin-bottom: 1.5rem;
-  }
-
-  .news-featured-meta {
-    font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
-  }
-
-  .news-list { display: flex; flex-direction: column; gap: 12px; }
-
-  .news-item {
-    border: 0.5px solid var(--border-mid);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    background: var(--white);
-    transition: border-color 0.2s;
-    cursor: default;
-  }
-
-  .news-item:hover { border-color: var(--accent-mid); }
-
-  .news-item-date {
-    font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted);
-    margin-bottom: 6px;
-  }
-
-  .news-item-title { font-size: 13px; font-weight: 500; line-height: 1.5; }
-
-  .news-tag {
-    display: inline-block; margin-top: 8px; padding: 2px 8px;
-    border-radius: 4px; font-size: 10px; letter-spacing: 0.05em;
-  }
-
-  .tag-event { background: var(--accent-light); color: var(--accent); }
-  .tag-announce { background: #fff3cd; color: #856404; }
-  .tag-sports { background: #cff4fc; color: #0c5460; }
-  .tag-study { background: #f8d7da; color: #842029; }
-
-  /* ── GALLERY ── */
-  #gallery { background: var(--off-white); }
-
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    gap: 12px;
-  }
-
-  .gallery-item {
-    border-radius: var(--radius); overflow: hidden;
-    background: var(--cream);
-    border: 0.5px solid var(--border);
-    aspect-ratio: 1;
-    display: flex; align-items: center; justify-content: center;
-    position: relative; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .gallery-item:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
-  .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
-  .gallery-item.tall { grid-row: span 2; aspect-ratio: 1/2; }
-
-  .gallery-placeholder {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 8px; padding: 1rem;
-  }
-
-  .gallery-emoji { font-size: 2.5rem; }
-  .gallery-caption { font-size: 11px; color: var(--ink-muted); text-align: center; letter-spacing: 0.03em; }
-
-  .gallery-overlay {
-    position: absolute; inset: 0; background: rgba(45,106,79,0.85);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.2s;
-    color: white; font-size: 12px; letter-spacing: 0.05em;
-  }
-
-  .gallery-item:hover .gallery-overlay { opacity: 1; }
-
-  /* ── GOALS ── */
-  #goals { background: var(--ink); color: var(--white); }
-
-  #goals .section-tag { color: rgba(255,255,255,0.4); }
-  #goals .section-tag::before { background: rgba(255,255,255,0.4); }
-  #goals .section-h2 { color: var(--white); }
-  #goals .section-lead { color: rgba(255,255,255,0.6); }
-
-  .goals-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  }
-
-  .goal-card {
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius-lg); padding: 2rem;
-    background: rgba(255,255,255,0.04);
-    transition: background 0.2s, border-color 0.2s;
-  }
-
-  .goal-card:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.2);
-  }
-
-  .goal-num {
-    font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700;
-    color: rgba(255,255,255,0.15); line-height: 1;
-    margin-bottom: 1rem;
-  }
-
-  .goal-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
-  .goal-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.8; }
-
-  /* ── TEACHER ── */
-  #teacher { background: var(--white); }
-
-  .teacher-layout {
-    display: grid; grid-template-columns: 320px 1fr; gap: 5rem; align-items: start;
-  }
-
-  .teacher-portrait {
-    background: var(--off-white); border-radius: var(--radius-lg);
-    border: 0.5px solid var(--border-mid);
-    padding: 2.5rem; text-align: center;
-  }
-
-  .portrait-circle {
-    width: 120px; height: 120px; border-radius: 50%;
-    background: var(--accent-light);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 2rem; font-weight: 700;
-    color: var(--accent); margin: 0 auto 1.5rem;
-  }
-
-  .portrait-name {
-    font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 4px;
-  }
-
-  .portrait-title { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.05em; }
-
-  .portrait-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.5rem; justify-content: center; }
-
-  .portrait-tag {
-    padding: 4px 10px; border-radius: 99px;
-    background: var(--white); border: 0.5px solid var(--border-mid);
-    font-size: 11px; color: var(--ink-light);
-  }
-
-  .teacher-message {
-    font-family: var(--font-display); font-style: italic;
-    font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.5;
-    color: var(--ink); margin-bottom: 1.5rem;
-    position: relative; padding-left: 1.5rem;
-  }
-
-  .teacher-message::before {
-    content: '"'; position: absolute; left: 0; top: -0.2em;
-    font-size: 3rem; color: var(--accent); line-height: 1; font-style: normal;
-  }
-
-  .teacher-bio {
-    font-size: 15px; color: var(--ink-light); line-height: 1.9; margin-bottom: 2rem;
-  }
-
-  .teacher-subjects { display: flex; flex-wrap: wrap; gap: 8px; }
-
-  .subj-badge {
-    padding: 6px 14px; border-radius: 8px;
-    background: var(--off-white); border: 0.5px solid var(--border-mid);
-    font-size: 12px; font-weight: 500; color: var(--ink-light);
-  }
-
-  /* ── CONTACT ── */
-  #contact { background: var(--off-white); }
-
-  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-
-  .contact-info-block {
-    border: 0.5px solid var(--border-mid); border-radius: var(--radius);
-    padding: 1.5rem; background: var(--white);
-    display: flex; align-items: flex-start; gap: 14px;
-  }
-
-  .contact-icon {
-    width: 40px; height: 40px; border-radius: 8px;
-    background: var(--accent-light); display: flex;
-    align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-
-  .contact-info-label { font-size: 11px; color: var(--ink-muted); margin-bottom: 4px; letter-spacing: 0.04em; }
-  .contact-info-value { font-size: 14px; font-weight: 500; }
-
-  .contact-blocks { display: flex; flex-direction: column; gap: 12px; }
-
-  .contact-form-side { display: flex; flex-direction: column; gap: 1rem; }
-
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-
-  .form-label { font-size: 12px; font-weight: 500; color: var(--ink-light); }
-
-  .form-input, .form-textarea {
-    padding: 10px 14px; border: 0.5px solid var(--border-mid);
-    border-radius: 8px; background: var(--white); font-family: var(--font-body);
-    font-size: 14px; color: var(--ink); outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-
-  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
-  .form-textarea { resize: vertical; min-height: 100px; }
-
-  .btn-primary {
-    padding: 12px 28px; border-radius: 8px;
-    background: var(--ink); color: var(--white);
-    border: none; font-family: var(--font-body); font-size: 14px; font-weight: 500;
-    cursor: pointer; transition: background 0.15s;
-    align-self: flex-start;
-  }
-
-  .btn-primary:hover { background: var(--accent); }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--ink); color: rgba(255,255,255,0.4);
-    padding: 2.5rem 5rem;
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px;
-  }
-
-  .footer-brand {
-    display: flex; align-items: center; gap: 10px;
-    color: rgba(255,255,255,0.8);
-  }
-
-  .footer-badge {
-    width: 28px; height: 28px; border-radius: 6px;
-    background: rgba(255,255,255,0.15);
-    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    color: white;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .anim { opacity: 0; }
-  .anim.visible { animation: fadeUp 0.6s ease forwards; }
-
-  .hero-left > * { animation: fadeUp 0.6s ease forwards; opacity: 0; }
-  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
-  .hero-left > *:nth-child(2) { animation-delay: 0.2s; }
-  .hero-left > *:nth-child(3) { animation-delay: 0.3s; }
-  .hero-left > *:nth-child(4) { animation-delay: 0.45s; }
-
-  .info-card { animation: fadeUp 0.5s ease forwards; opacity: 0; }
-  .info-card:nth-child(1) { animation-delay: 0.4s; }
-  .info-card:nth-child(2) { animation-delay: 0.55s; }
-  .info-card:nth-child(3) { animation-delay: 0.7s; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    #hero { grid-template-columns: 1fr; }
-    .hero-right { min-height: 300px; }
-    .hero-left { padding: 3rem 2rem; }
-    section { padding: 4rem 2rem; }
-    .news-grid { grid-template-columns: 1fr; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .goals-grid { grid-template-columns: 1fr; }
-    .teacher-layout { grid-template-columns: 1fr; }
-    .contact-layout { grid-template-columns: 1fr; }
-    .schedule-layout { grid-template-columns: 1fr; }
-    nav { padding: 0 1.5rem; }
-    .nav-links { display: none; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
-  }
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1.1fr 0.9fr;
+  padding-top: 60px; overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 6rem 3.5rem 6rem 5rem; position: relative;
+}
+.hero-left > * { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+.hero-left > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-left > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-left > *:nth-child(3) { animation-delay: 0.28s; }
+.hero-left > *:nth-child(4) { animation-delay: 0.42s; }
+.hero-left > *:nth-child(5) { animation-delay: 0.55s; }
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--accent); }
+
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 5.5vw, 5.5rem);
+  line-height: 1.05; letter-spacing: -0.025em;
+  color: var(--ink); margin-bottom: 1.5rem;
+}
+.hero-h1 em { font-style:italic; color:var(--accent); }
+
+.hero-desc {
+  font-size: 16px; color: var(--ink-light); line-height: 1.9;
+  max-width: 400px; margin-bottom: 2.5rem;
+}
+
+.hero-cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom: 3.5rem; }
+
+.btn-dark {
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 12px 24px; border-radius: 8px;
+  background: var(--ink); color: var(--white);
+  text-decoration: none; font-size: 13px; font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-dark:hover { background: var(--accent); }
+
+.btn-outline {
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 12px 24px; border-radius: 8px;
+  background: transparent; color: var(--ink);
+  text-decoration: none; font-size: 13px; font-weight: 500;
+  border: 0.5px solid var(--border-mid);
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-stats { display:flex; gap:3rem; }
+.hero-stat-num {
+  font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700;
+  color: var(--ink); line-height: 1;
+}
+.hero-stat-label { font-size: 11px; color: var(--ink-muted); margin-top:4px; letter-spacing:0.04em; }
+
+/* Hero right panel */
+.hero-right {
+  background: var(--off-white);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.hero-card-stack {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 2rem; width: 340px;
+}
+.info-card {
+  background: var(--white);
+  border: 0.5px solid var(--border-mid);
+  border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative; overflow: hidden;
+  animation: fadeUp 0.5s ease forwards; opacity: 0;
+}
+.info-card:nth-child(1) { animation-delay: 0.4s; }
+.info-card:nth-child(2) { animation-delay: 0.55s; }
+.info-card:nth-child(3) { animation-delay: 0.7s; }
+.info-card:nth-child(4) { animation-delay: 0.85s; }
+.info-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+}
+.ic-green::before { background:var(--accent); }
+.ic-gold::before  { background:var(--gold); }
+.ic-coral::before { background:var(--coral); }
+.ic-sky::before   { background:var(--sky); }
+.card-label { font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:5px; }
+.card-value { font-size:15px; font-weight:500; color:var(--ink); }
+.card-sub   { font-size:11px; color:var(--ink-muted); margin-top:2px; }
+
+/* countdown */
+.countdown-row { display:flex; gap:16px; margin-top:8px; }
+.cd-block { text-align:center; }
+.cd-num {
+  font-family: var(--font-mono); font-size:1.4rem; font-weight:700;
+  color:var(--accent); line-height:1;
+}
+.cd-unit { font-size:9px; color:var(--ink-muted); letter-spacing:0.08em; }
+
+/* ── ABOUT STRIP ── */
+#about {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
+}
+.about-cell {
+  padding: 2.5rem; border-right: 0.5px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.about-cell:last-child { border-right: none; }
+.about-icon { font-size: 1.5rem; margin-bottom: 4px; }
+.about-num { font-family:var(--font-mono); font-size:1.8rem; font-weight:700; color:var(--ink); }
+.about-text { font-size:12px; color:var(--ink-muted); line-height:1.6; }
+
+/* ── QUICK NEWS ── */
+#quick-news { padding: 5rem; }
+.qnews-layout { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+
+.news-item-big {
+  border: 0.5px solid var(--border-mid); border-radius:var(--radius-lg);
+  overflow:hidden; background:var(--off-white); cursor:default;
+  transition: box-shadow 0.2s;
+}
+.news-item-big:hover { box-shadow: var(--shadow-md); }
+.nib-thumb {
+  height: 180px; background: var(--cream);
+  display:flex; align-items:center; justify-content:center; font-size:4rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.nib-body { padding: 1.5rem; }
+.nib-date { font-family:var(--font-mono); font-size:10px; color:var(--ink-muted); margin-bottom:8px; }
+.nib-title { font-size:16px; font-weight:500; line-height:1.5; margin-bottom:8px; }
+.nib-excerpt { font-size:12px; color:var(--ink-light); line-height:1.8; }
+
+.news-side { display:flex; flex-direction:column; gap:10px; }
+.ns-item {
+  border: 0.5px solid var(--border-mid); border-radius:var(--radius);
+  padding: 1rem 1.25rem; background:var(--white); cursor:default;
+  transition: border-color 0.2s;
+}
+.ns-item:hover { border-color:var(--accent-mid); }
+.ns-date { font-family:var(--font-mono); font-size:10px; color:var(--ink-muted); margin-bottom:4px; }
+.ns-title { font-size:13px; font-weight:500; line-height:1.5; }
+.ns-tags { display:flex; gap:6px; margin-top:8px; }
+
+.news-footer-row { margin-top: 2rem; text-align:center; }
+
+/* ── UPCOMING EVENTS ── */
+#upcoming { padding: 5rem; background:var(--off-white); }
+.events-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.event-card {
+  background:var(--white); border:0.5px solid var(--border-mid);
+  border-radius:var(--radius-lg); padding:1.75rem; overflow:hidden; position:relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.event-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+.event-date-block {
+  display:inline-flex; flex-direction:column; align-items:center;
+  background:var(--accent-light); border-radius:8px; padding:8px 14px;
+  margin-bottom:1rem;
+}
+.event-month { font-family:var(--font-mono); font-size:9px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; }
+.event-day   { font-family:var(--font-mono); font-size:1.8rem; font-weight:700; color:var(--accent); line-height:1; }
+.event-title { font-size:16px; font-weight:500; margin-bottom:6px; }
+.event-desc  { font-size:12px; color:var(--ink-muted); line-height:1.7; }
+.event-card.gold-card { border-color: rgba(233,196,106,0.4); }
+.event-card.gold-card .event-date-block { background:var(--gold-light); }
+.event-card.gold-card .event-month,
+.event-card.gold-card .event-day { color:#8c6800; }
+.event-card.coral-card { border-color:rgba(231,111,81,0.3); }
+.event-card.coral-card .event-date-block { background:var(--coral-light); }
+.event-card.coral-card .event-month,
+.event-card.coral-card .event-day { color:#a03020; }
+
+/* ── CLASS MESSAGE ── */
+#message { padding:5rem; background:var(--ink); color:white; }
+.message-inner {
+  max-width: 760px; margin: 0 auto; text-align:center;
+}
+.message-quote {
+  font-family:var(--font-display); font-style:italic;
+  font-size: clamp(1.8rem, 3vw, 2.8rem); line-height:1.4;
+  color:white; margin-bottom:2rem;
+}
+.message-quote span { color: var(--accent-mid); }
+.message-attr { font-family:var(--font-mono); font-size:11px; color:rgba(255,255,255,0.4); }
+
+/* grid responsive */
+@media (max-width:900px) {
+  #hero { grid-template-columns:1fr; }
+  .hero-right { min-height:320px; }
+  .hero-left { padding:3rem 2rem; }
+  #about { grid-template-columns:1fr 1fr; }
+  .about-cell { border-bottom:0.5px solid var(--border); }
+  #quick-news { padding:3rem 2rem; }
+  .qnews-layout { grid-template-columns:1fr; }
+  #upcoming { padding:3rem 2rem; }
+  .events-grid { grid-template-columns:1fr; }
+  #message { padding:4rem 2rem; }
+}
 </style>
 </head>
 <body>
 
-<!-- ── NAVIGATION ── -->
 <nav>
-  <a href="#hero" class="nav-brand">
+  <a href="index.html" class="nav-brand">
     <div class="nav-badge">J1B</div>
     <span class="nav-title">1年B組 公式サイト</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#members">メンバー</a></li>
-    <li><a href="#schedule">時間割</a></li>
-    <li><a href="#news">お知らせ</a></li>
-    <li><a href="#gallery">フォトギャラリー</a></li>
-    <li><a href="#goals">クラス目標</a></li>
-    <li><a href="#teacher">担任紹介</a></li>
-    <li><a href="#contact">連絡先</a></li>
+    <li><a href="index.html" class="active">ホーム</a></li>
+    <li><a href="members.html">メンバー</a></li>
+    <li><a href="schedule.html">時間割・行事</a></li>
+    <li><a href="news.html">お知らせ</a></li>
+    <li><a href="gallery.html">ギャラリー</a></li>
+    <li><a href="goals.html">目標・担任</a></li>
+    <li><a href="contact.html">連絡先</a></li>
   </ul>
 </nav>
 
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hero-left">
-    <p class="hero-eyebrow">Official Class Site · 2025</p>
-    <h1 class="hero-h1">
-      ようこそ、<br>
-      <em>J1B</em> へ。
-    </h1>
-    <p class="hero-desc">
-      好奇心旺盛な仲間たちが集まる中学1年B組。<br>
-      ともに学び、笑い、成長していくクラスです。<br>
-      ここに、私たちの日常があります。
-    </p>
+    <p class="hero-eyebrow">Official Class Site · 2025年度</p>
+    <h1 class="hero-h1">ようこそ、<br><em>J1B</em> へ。</h1>
+    <p class="hero-desc">好奇心旺盛な35人が集まる中学1年B組の公式サイトです。クラスの日常・行事・メンバー紹介など、J1Bのすべてがここにあります。</p>
+    <div class="hero-cta-row">
+      <a href="members.html" class="btn-dark">メンバーを見る →</a>
+      <a href="news.html" class="btn-outline">最新情報</a>
+    </div>
     <div class="hero-stats">
       <div>
         <div class="hero-stat-num">35</div>
         <div class="hero-stat-label">クラスメート</div>
       </div>
       <div>
-        <div class="hero-stat-num">1</div>
-        <div class="hero-stat-label">担任の先生</div>
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">主要行事</div>
       </div>
       <div>
-        <div class="hero-stat-num">365</div>
-        <div class="hero-stat-label">思い出の日々</div>
+        <div class="hero-stat-num">2025</div>
+        <div class="hero-stat-label">年度</div>
       </div>
     </div>
   </div>
 
   <div class="hero-right">
     <div class="hero-grid-bg"></div>
-    <div class="hero-visual">
-      <div class="hero-card-stack">
-        <div class="info-card green">
-          <div class="card-label">教室</div>
-          <div class="card-value">1号館 2F — 205号室</div>
-          <div class="card-sub">昇降口から右手、2階へ</div>
+    <div class="hero-card-stack">
+      <div class="info-card ic-green">
+        <div class="card-label">教室</div>
+        <div class="card-value">1号館 2F — 205号室</div>
+        <div class="card-sub">昇降口から右手、2階へ上がってすぐ</div>
+      </div>
+      <div class="info-card ic-gold">
+        <div class="card-label">⏳ 体育大会まで</div>
+        <div class="countdown-row">
+          <div class="cd-block"><div class="cd-num" id="cd-days">21</div><div class="cd-unit">DAYS</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-hours">08</div><div class="cd-unit">HRS</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-mins">45</div><div class="cd-unit">MIN</div></div>
+          <div class="cd-block"><div class="cd-num" id="cd-secs">30</div><div class="cd-unit">SEC</div></div>
         </div>
-        <div class="info-card gold">
-          <div class="card-label">次のイベント</div>
-          <div class="card-value">体育大会まであと 21日</div>
-          <div class="card-sub">2025年6月1日（日）予定</div>
-        </div>
-        <div class="info-card coral">
-          <div class="card-label">今週のひとこと</div>
-          <div class="card-value">「全力で、楽しもう！」</div>
-          <div class="card-sub">— 学級委員長より</div>
-        </div>
+        <div class="card-sub" style="margin-top:6px;">2025年6月1日（日）開催予定</div>
+      </div>
+      <div class="info-card ic-coral">
+        <div class="card-label">今週のひとこと</div>
+        <div class="card-value">「全力で、楽しもう！」</div>
+        <div class="card-sub">— 学級委員長 田中 葵</div>
+      </div>
+      <div class="info-card ic-sky">
+        <div class="card-label">担任</div>
+        <div class="card-value">松本 健太郎 先生</div>
+        <div class="card-sub">英語科 · 野球部顧問 · 8年目</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── MEMBERS ── -->
-<section id="members">
-  <p class="section-tag anim">Members</p>
-  <h2 class="section-h2 anim">クラスの仲間たち</h2>
-  <p class="section-lead anim">個性豊かな35人が集まるJ1B。それぞれの得意なことや好きなことを活かして、毎日を楽しんでいます。</p>
+<!-- ── ABOUT STRIP ── -->
+<div id="about">
+  <div class="about-cell anim">
+    <div class="about-icon">👥</div>
+    <div class="about-num">35</div>
+    <div class="about-text">男子18名・女子17名<br>個性豊かなクラスメート</div>
+  </div>
+  <div class="about-cell anim">
+    <div class="about-icon">📚</div>
+    <div class="about-num">9</div>
+    <div class="about-text">週9科目<br>月〜金バランスよく</div>
+  </div>
+  <div class="about-cell anim">
+    <div class="about-icon">🏆</div>
+    <div class="about-num">6</div>
+    <div class="about-text">年間6大行事<br>全力で取り組みます</div>
+  </div>
+  <div class="about-cell anim">
+    <div class="about-icon">🌱</div>
+    <div class="about-num">3</div>
+    <div class="about-text">クラス目標3か条<br>思いやり・全力・笑顔</div>
+  </div>
+</div>
 
-  <div class="members-grid">
-    <!-- 学級役員 -->
-    <div class="member-card" style="border-color: rgba(45,106,79,0.3); background: #f8fffa;">
-      <span class="member-number">#01</span>
-      <div class="member-avatar" style="background: var(--accent-light); color: var(--accent);">田</div>
-      <div class="member-name">田中 葵</div>
-      <div class="member-role">学級委員長</div>
-      <div class="member-hobby">📚 読書 · バスケ</div>
-    </div>
-    <div class="member-card" style="border-color: rgba(45,106,79,0.3); background: #f8fffa;">
-      <span class="member-number">#02</span>
-      <div class="member-avatar" style="background: #e8f4ff; color: #1d6fa5;">佐</div>
-      <div class="member-name">佐藤 蓮</div>
-      <div class="member-role">副委員長</div>
-      <div class="member-hobby">🎸 ギター · 映画鑑賞</div>
-    </div>
-    <div class="member-card" style="border-color: rgba(45,106,79,0.3); background: #f8fffa;">
-      <span class="member-number">#03</span>
-      <div class="member-avatar" style="background: #fff0e8; color: #c25f2e;">鈴</div>
-      <div class="member-name">鈴木 陽菜</div>
-      <div class="member-role">書記</div>
-      <div class="member-hobby">✏️ イラスト · 料理</div>
-    </div>
-    <div class="member-card" style="border-color: rgba(45,106,79,0.3); background: #f8fffa;">
-      <span class="member-number">#04</span>
-      <div class="member-avatar" style="background: #f8e8ff; color: #7c3db0;">高</div>
-      <div class="member-name">高橋 湊</div>
-      <div class="member-role">会計</div>
-      <div class="member-hobby">🎮 ゲーム · 数学</div>
-    </div>
+<!-- ── QUICK NEWS ── -->
+<section id="quick-news">
+  <p class="section-tag anim">Latest News</p>
+  <h2 class="section-h2 anim">最新のお知らせ</h2>
+  <p class="section-lead anim">クラスの最新情報をお届けします。</p>
 
-    <!-- 一般クラスメート -->
-    <div class="member-card">
-      <span class="member-number">#05</span>
-      <div class="member-avatar" style="background: #fff8e0; color: #a07c00;">伊</div>
-      <div class="member-name">伊藤 柚希</div>
-      <div class="member-role">体育委員</div>
-      <div class="member-hobby">⚽ サッカー</div>
+  <div class="qnews-layout">
+    <a href="news.html" style="text-decoration:none; color:inherit;" class="anim">
+      <div class="news-item-big">
+        <div class="nib-thumb">🏃</div>
+        <div class="nib-body">
+          <div class="nib-date">2025.05.10 — イベント</div>
+          <div class="nib-title">体育大会に向けてクラス練習スタート！放課後の絆が深まる</div>
+          <div class="nib-excerpt">6月1日の体育大会まで残り約3週間。全員リレーと大縄跳びに向けた放課後練習が始まりました。田中委員長のリードで、クラス全体が一丸となっています。</div>
+          <div style="margin-top:1rem;"><span class="badge badge-green">イベント</span></div>
+        </div>
+      </div>
+    </a>
+
+    <div class="news-side anim">
+      <div class="ns-item">
+        <div class="ns-date">2025.05.09</div>
+        <div class="ns-title">理科の実験レポート、提出期限は5/14（水）です</div>
+        <div class="ns-tags"><span class="badge badge-coral">学習</span></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-date">2025.05.07</div>
+        <div class="ns-title">5月の清掃当番表が更新されました（教室前掲示板）</div>
+        <div class="ns-tags"><span class="badge badge-gray">連絡</span></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-date">2025.05.05</div>
+        <div class="ns-title">文化祭の出し物アイデア、HR で募集中！</div>
+        <div class="ns-tags"><span class="badge badge-gold">募集</span></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-date">2025.05.01</div>
+        <div class="ns-title">山本さん、陸上部 県大会出場おめでとう！</div>
+        <div class="ns-tags"><span class="badge badge-sky">スポーツ</span></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-date">2025.04.25</div>
+        <div class="ns-title">遠足のしおり配布（5月20日、〇〇公園）</div>
+        <div class="ns-tags"><span class="badge badge-green">行事</span></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-date">2025.04.18</div>
+        <div class="ns-title">数学プリント No.7、解答を教室後ろに配布しました</div>
+        <div class="ns-tags"><span class="badge badge-coral">学習</span></div>
+      </div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#06</span>
-      <div class="member-avatar" style="background: #e8fff0; color: #1a8c4e;">渡</div>
-      <div class="member-name">渡辺 さくら</div>
-      <div class="member-role">図書委員</div>
-      <div class="member-hobby">📖 小説 · ピアノ</div>
+  </div>
+
+  <div class="news-footer-row anim">
+    <a href="news.html" class="btn-outline">すべてのお知らせを見る →</a>
+  </div>
+</section>
+
+<!-- ── UPCOMING EVENTS ── -->
+<section id="upcoming">
+  <p class="section-tag anim">Upcoming Events</p>
+  <h2 class="section-h2 anim">近日の行事・予定</h2>
+  <p class="section-lead anim">J1Bの今後のスケジュールをご確認ください。</p>
+
+  <div class="events-grid">
+    <div class="event-card anim">
+      <div class="event-date-block">
+        <span class="event-month">May</span>
+        <span class="event-day">20</span>
+      </div>
+      <div class="event-title">春の遠足</div>
+      <div class="event-desc">〇〇公園への校外学習。自然の中でクラスの絆を深めます。弁当持参・動きやすい服装で。</div>
+      <div style="margin-top:1rem;"><span class="badge badge-green">校外学習</span></div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#07</span>
-      <div class="member-avatar" style="background: #ffe8e8; color: #c0392b;">山</div>
-      <div class="member-name">山本 颯太</div>
-      <div class="member-role">保健委員</div>
-      <div class="member-hobby">🏊 水泳 · 料理</div>
+    <div class="event-card gold-card anim">
+      <div class="event-date-block">
+        <span class="event-month">Jun</span>
+        <span class="event-day">01</span>
+      </div>
+      <div class="event-title">体育大会</div>
+      <div class="event-desc">全学年が集う大運動会。J1Bは全員リレー・大縄跳び・綱引きに出場。今年こそ総合優勝を！</div>
+      <div style="margin-top:1rem;"><span class="badge badge-gold">体育大会</span></div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#08</span>
-      <div class="member-avatar" style="background: #e8eeff; color: #2d3ca8;">中</div>
-      <div class="member-name">中村 美桜</div>
-      <div class="member-role">美化委員</div>
-      <div class="member-hobby">🎨 絵画 · ダンス</div>
+    <div class="event-card coral-card anim">
+      <div class="event-date-block">
+        <span class="event-month">Jun</span>
+        <span class="event-day">20</span>
+      </div>
+      <div class="event-title">中間テスト</div>
+      <div class="event-desc">5教科（国語・数学・英語・理科・社会）の定期テスト。範囲は各教科の授業プリントを確認。</div>
+      <div style="margin-top:1rem;"><span class="badge badge-coral">テスト</span></div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#09</span>
-      <div class="member-avatar" style="background: #fff0f8; color: #b0306e;">小</div>
-      <div class="member-name">小林 悠真</div>
-      <div class="member-role">給食委員</div>
-      <div class="member-hobby">🍳 料理 · ドラム</div>
+    <div class="event-card anim">
+      <div class="event-date-block">
+        <span class="event-month">Jul</span>
+        <span class="event-day">12</span>
+      </div>
+      <div class="event-title">七夕かざり</div>
+      <div class="event-desc">毎年恒例、学校の廊下に飾る七夕の短冊。クラス全員が願いを書いて教室前の廊下に飾ります。</div>
+      <div style="margin-top:1rem;"><span class="badge badge-green">学校行事</span></div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#10</span>
-      <div class="member-avatar" style="background: #f0fff8; color: #12825a;">加</div>
-      <div class="member-name">加藤 結衣</div>
-      <div class="member-role">放送委員</div>
-      <div class="member-hobby">🎤 歌 · 映画</div>
+    <div class="event-card gold-card anim">
+      <div class="event-date-block">
+        <span class="event-month">Jul</span>
+        <span class="event-day">18</span>
+      </div>
+      <div class="event-title">1学期終業式</div>
+      <div class="event-desc">1学期の締めくくり。通知表・夏休みの課題が配布されます。夏休みは8月26日まで。</div>
+      <div style="margin-top:1rem;"><span class="badge badge-gold">終業式</span></div>
     </div>
-    <div class="member-card">
-      <span class="member-number">#11</span>
-      <div class="member-avatar" style="background: #f8f0e8; color: #8c5a1a;">吉</div>
-      <div class="member-name">吉田 大翔</div>
-      <div class="member-role">広報委員</div>
-      <div class="member-hobby">📷 写真 · バレー</div>
-    </div>
-    <div class="member-card">
-      <span class="member-number">#12</span>
-      <div class="member-avatar" style="background: #e8f0ff; color: #1a3c8c;">山</div>
-      <div class="member-name">山田 詩音</div>
-      <div class="member-role">文化委員</div>
-      <div class="member-hobby">🎵 ヴァイオリン</div>
-    </div>
-    <!-- More members row -->
-    <div class="member-card" style="border-style: dashed; background: var(--off-white); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 140px;">
-      <div style="font-size: 1.5rem; margin-bottom: 8px;">＋ 23名</div>
-      <div style="font-size: 12px; color: var(--ink-muted);">残りのクラスメートたち</div>
+    <div class="event-card coral-card anim">
+      <div class="event-date-block">
+        <span class="event-month">Sep</span>
+        <span class="event-day">13</span>
+      </div>
+      <div class="event-title">文化祭</div>
+      <div class="event-desc">J1Bの出し物は現在検討中！クラスで投票して決定します。今から準備を進めていきましょう。</div>
+      <div style="margin-top:1rem;"><span class="badge badge-coral">文化祭</span></div>
     </div>
   </div>
 </section>
 
-<!-- ── SCHEDULE ── -->
-<section id="schedule">
-  <p class="section-tag anim">Timetable</p>
-  <h2 class="section-h2 anim">今週の時間割</h2>
-  <p class="section-lead anim">2025年度 前期 J1B クラス週間スケジュール</p>
-
-  <div class="schedule-layout">
-    <div class="schedule-aside">
-      <p style="font-size:13px; color: var(--ink-muted); margin-bottom: 1rem; line-height: 1.8;">
-        授業開始は毎朝 <strong>8:30</strong>。<br>
-        昼食は <strong>12:30〜13:10</strong>。<br>
-        放課後は <strong>15:30</strong> まで。
-      </p>
-      <div style="border: 0.5px solid var(--border-mid); border-radius: var(--radius); padding: 1.2rem; background: white; margin-top: 1rem;">
-        <div style="font-size: 11px; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">科目の色</div>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#fff8f0;border:0.5px solid #e8d0b0;display:inline-block;"></span>国語</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#f0f4ff;border:0.5px solid #b0b8e8;display:inline-block;"></span>数学</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#f0fff4;border:0.5px solid #a0d8b0;display:inline-block;"></span>英語</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#fff0f0;border:0.5px solid #e8b0b0;display:inline-block;"></span>理科</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#fffff0;border:0.5px solid #d8d8a0;display:inline-block;"></span>社会</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span style="width:12px;height:12px;border-radius:2px;background:#f0f8ff;border:0.5px solid #a0c0e0;display:inline-block;"></span>体育</div>
-        </div>
-      </div>
+<!-- ── MESSAGE ── */-->
+<section id="message">
+  <div class="message-inner anim">
+    <div class="message-quote">
+      「ひとりはみんなのために、<br><span>みんなはひとりのために。</span>」
     </div>
-
-    <div class="timetable">
-      <div class="timetable-header">
-        <div></div>
-        <div>月</div>
-        <div>火</div>
-        <div>水</div>
-        <div>木</div>
-        <div>金</div>
-      </div>
-      <!-- 1限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">1</span>8:30</div>
-        <div class="subject-cell subj-en"><span class="subject-name">英語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-math"><span class="subject-name">数学</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-jp"><span class="subject-name">国語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-sci"><span class="subject-name">理科</span><span class="subject-room">理科室</span></div>
-        <div class="subject-cell subj-en"><span class="subject-name">英語</span><span class="subject-room">205</span></div>
-      </div>
-      <!-- 2限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">2</span>9:20</div>
-        <div class="subject-cell subj-math"><span class="subject-name">数学</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-soc"><span class="subject-name">社会</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-pe"><span class="subject-name">体育</span><span class="subject-room">体育館</span></div>
-        <div class="subject-cell subj-math"><span class="subject-name">数学</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-soc"><span class="subject-name">社会</span><span class="subject-room">205</span></div>
-      </div>
-      <!-- 3限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">3</span>10:15</div>
-        <div class="subject-cell subj-jp"><span class="subject-name">国語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-sci"><span class="subject-name">理科</span><span class="subject-room">理科室</span></div>
-        <div class="subject-cell subj-math"><span class="subject-name">数学</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-en"><span class="subject-name">英語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-music"><span class="subject-name">音楽</span><span class="subject-room">音楽室</span></div>
-      </div>
-      <!-- 4限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">4</span>11:05</div>
-        <div class="subject-cell subj-soc"><span class="subject-name">社会</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-jp"><span class="subject-name">国語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-sci"><span class="subject-name">理科</span><span class="subject-room">理科室</span></div>
-        <div class="subject-cell subj-pe"><span class="subject-name">体育</span><span class="subject-room">グラウンド</span></div>
-        <div class="subject-cell subj-art"><span class="subject-name">美術</span><span class="subject-room">美術室</span></div>
-      </div>
-      <!-- 昼食 -->
-      <div style="background: var(--off-white); padding: 8px 12px; border-bottom: 0.5px solid var(--border); text-align:center; font-size:11px; color: var(--ink-muted); letter-spacing: 0.05em;">🍱 昼食 12:30〜13:10</div>
-      <!-- 5限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">5</span>13:10</div>
-        <div class="subject-cell subj-tech"><span class="subject-name">技術</span><span class="subject-room">技術室</span></div>
-        <div class="subject-cell subj-en"><span class="subject-name">英語</span><span class="subject-room">LL教室</span></div>
-        <div class="subject-cell subj-soc"><span class="subject-name">社会</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-jp"><span class="subject-name">国語</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-sci"><span class="subject-name">理科</span><span class="subject-room">理科室</span></div>
-      </div>
-      <!-- 6限 -->
-      <div class="timetable-row">
-        <div class="time-cell"><span class="time-period">6</span>14:00</div>
-        <div class="subject-cell subj-home"><span class="subject-name">家庭科</span><span class="subject-room">家庭室</span></div>
-        <div class="subject-cell subj-moral"><span class="subject-name">道徳</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-hr"><span class="subject-name">HR</span><span class="subject-room">205</span></div>
-        <div class="subject-cell subj-music"><span class="subject-name">音楽</span><span class="subject-room">音楽室</span></div>
-        <div class="subject-cell subj-math"><span class="subject-name">数学</span><span class="subject-room">205</span></div>
-      </div>
-    </div>
+    <p style="font-size:15px; color:rgba(255,255,255,0.55); margin-bottom:2rem; line-height:1.9;">
+      J1B のクラスモットーです。35人が力を合わせて、最高の1年をつくっていきましょう。
+    </p>
+    <a href="goals.html" class="btn-outline" style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.2);">クラス目標を見る →</a>
   </div>
 </section>
 
-<!-- ── NEWS ── -->
-<section id="news">
-  <p class="section-tag anim">News & Updates</p>
-  <h2 class="section-h2 anim">お知らせ</h2>
-  <p class="section-lead anim">クラスからの最新情報をお届けします。</p>
-
-  <div class="news-grid">
-    <div class="news-featured">
-      <span class="news-featured-tag">✨ 特集</span>
-      <h3 class="news-featured-title">体育大会に向けて、<br>クラス練習スタート！</h3>
-      <p class="news-featured-body">
-        6月1日（日）に行われる体育大会に向けて、J1Bの練習が本格的にスタートしました。今年のJ1Bは「全員リレー」と「大縄跳び」に全力を注いでいます。放課後の練習では笑顔があふれ、クラスの絆がどんどん深まっています。今年こそ総合優勝を目指して、みんなで頑張りましょう！
-      </p>
-      <span class="news-featured-meta">2025.05.08 — 学級委員長 田中 葵</span>
-    </div>
-
-    <div class="news-list">
-      <div class="news-item">
-        <div class="news-item-date">2025.05.10</div>
-        <div class="news-item-title">理科の実験レポート提出期限について</div>
-        <span class="news-tag tag-study">学習</span>
-      </div>
-      <div class="news-item">
-        <div class="news-item-date">2025.05.07</div>
-        <div class="news-item-title">5月の清掃当番表が更新されました</div>
-        <span class="news-tag tag-announce">連絡</span>
-      </div>
-      <div class="news-item">
-        <div class="news-item-date">2025.05.05</div>
-        <div class="news-item-title">文化祭の出し物アイデア募集中！</div>
-        <span class="news-tag tag-event">イベント</span>
-      </div>
-      <div class="news-item">
-        <div class="news-item-date">2025.05.01</div>
-        <div class="news-item-title">陸上部 県大会出場おめでとう！</div>
-        <span class="news-tag tag-sports">スポーツ</span>
-      </div>
-      <div class="news-item">
-        <div class="news-item-date">2025.04.25</div>
-        <div class="news-item-title">遠足のしおりを配布しました（5/20）</div>
-        <span class="news-tag tag-event">イベント</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── GALLERY ── -->
-<section id="gallery">
-  <p class="section-tag anim">Photo Gallery</p>
-  <h2 class="section-h2 anim">フォトギャラリー</h2>
-  <p class="section-lead anim">日々の思い出を写真で振り返ります。</p>
-
-  <div class="gallery-grid">
-    <div class="gallery-item wide">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">🏫</div>
-        <div class="gallery-caption">入学式・クラス写真<br>2025.04.08</div>
-      </div>
-      <div class="gallery-overlay">入学式</div>
-    </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">🌸</div>
-        <div class="gallery-caption">お花見遠足<br>4月</div>
-      </div>
-      <div class="gallery-overlay">春の遠足</div>
-    </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">🔬</div>
-        <div class="gallery-caption">理科実験<br>顕微鏡観察</div>
-      </div>
-      <div class="gallery-overlay">理科の授業</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">🎨</div>
-        <div class="gallery-caption">美術・自画像<br>制作中</div>
-      </div>
-      <div class="gallery-overlay">美術の時間</div>
-    </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">🍱</div>
-        <div class="gallery-caption">みんなでランチ<br>楽しい昼食</div>
-      </div>
-      <div class="gallery-overlay">給食の時間</div>
-    </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">⚽</div>
-        <div class="gallery-caption">体育・サッカー<br>GW明けの授業</div>
-      </div>
-      <div class="gallery-overlay">体育の授業</div>
-    </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <div class="gallery-emoji">📚</div>
-        <div class="gallery-caption">図書館での<br>読書タイム</div>
-      </div>
-      <div class="gallery-overlay">図書館</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── GOALS ── -->
-<section id="goals">
-  <p class="section-tag anim">Class Goals</p>
-  <h2 class="section-h2 anim">J1B クラス目標</h2>
-  <p class="section-lead anim">私たちJ1Bが大切にしている3つの約束。</p>
-
-  <div class="goals-grid">
-    <div class="goal-card anim">
-      <div class="goal-num">01</div>
-      <div class="goal-title">思いやりをもって、<br>助け合う</div>
-      <div class="goal-desc">クラスメートが困っているときは積極的に声をかけ、お互いを支え合えるクラスを目指します。</div>
-    </div>
-    <div class="goal-card anim">
-      <div class="goal-num">02</div>
-      <div class="goal-title">何事にも<br>全力で取り組む</div>
-      <div class="goal-desc">授業も行事も掃除も、手を抜かずに最後まで挑戦する。その積み重ねが大きな成長につながります。</div>
-    </div>
-    <div class="goal-card anim">
-      <div class="goal-num">03</div>
-      <div class="goal-title">笑顔あふれる<br>クラスをつくる</div>
-      <div class="goal-desc">毎日教室に来るのが楽しくなるような、明るく居心地のいい雰囲気を全員でつくっていきます。</div>
-    </div>
-  </div>
-
-  <div style="margin-top: 3rem; padding: 2.5rem; border: 0.5px solid rgba(255,255,255,0.15); border-radius: var(--radius-lg); background: rgba(255,255,255,0.04);">
-    <div style="font-family: var(--font-display); font-style: italic; font-size: 1.6rem; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 1rem;">
-      「ひとりはみんなのために、みんなはひとりのために」
-    </div>
-    <div style="font-size: 13px; color: rgba(255,255,255,0.45);">J1B クラスのモットー · 2025年度</div>
-  </div>
-</section>
-
-<!-- ── TEACHER ── -->
-<section id="teacher">
-  <p class="section-tag anim">Class Teacher</p>
-  <h2 class="section-h2 anim">担任の先生</h2>
-
-  <div class="teacher-layout">
-    <div class="teacher-portrait anim">
-      <div class="portrait-circle">先</div>
-      <div class="portrait-name">松本 健太郎 先生</div>
-      <div class="portrait-title">担任 · 英語科</div>
-      <div class="portrait-tags">
-        <span class="portrait-tag">英語</span>
-        <span class="portrait-tag">野球</span>
-        <span class="portrait-tag">映画</span>
-        <span class="portrait-tag">読書</span>
-      </div>
-      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 0.5px solid var(--border); font-size: 12px; color: var(--ink-muted); text-align: left;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>担当科目</span><span style="color: var(--ink);">英語</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>部活顧問</span><span style="color: var(--ink);">野球部</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>教員歴</span><span style="color: var(--ink);">8年目</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="anim">
-      <p class="teacher-message">
-        失敗を恐れず、まずはやってみることが大切です。中学の3年間で、たくさん挑戦して、たくさん失敗して、そして大きく成長してほしい。
-      </p>
-      <p class="teacher-bio">
-        はじめまして、J1Bの担任を務める松本健太郎です。学校では英語を教えており、野球部の顧問もしています。英語が苦手な人も、ぜひ授業で好きになってもらえるよう全力で頑張ります。<br><br>
-        J1Bのみなさんは元気いっぱいで好奇心旺盛な子たちが多く、毎日の授業が楽しみです。皆さんの笑顔と成長を見守りながら、この1年間を大切にしていきましょう。何か困ったことや相談があれば、いつでも声をかけてください。<br><br>
-        保護者の皆様にも、学校でのお子様の様子を定期的にお伝えしてまいります。ともに最高の1年をつくっていきましょう。
-      </p>
-      <div class="teacher-subjects">
-        <span class="subj-badge">英語A</span>
-        <span class="subj-badge">英語B（LL）</span>
-        <span class="subj-badge">野球部顧問</span>
-        <span class="subj-badge">生活指導委員</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CONTACT ── -->
-<section id="contact">
-  <p class="section-tag anim">Contact</p>
-  <h2 class="section-h2 anim">連絡先・お問い合わせ</h2>
-  <p class="section-lead anim">保護者・関係者の方はこちらからご連絡ください。</p>
-
-  <div class="contact-layout">
-    <div class="contact-blocks">
-      <div class="contact-info-block">
-        <div class="contact-icon">🏫</div>
-        <div>
-          <div class="contact-info-label">学校名</div>
-          <div class="contact-info-value">〇〇市立〇〇中学校</div>
-        </div>
-      </div>
-      <div class="contact-info-block">
-        <div class="contact-icon">📍</div>
-        <div>
-          <div class="contact-info-label">所在地</div>
-          <div class="contact-info-value">〒000-0000 〇〇市〇〇町1-1-1</div>
-        </div>
-      </div>
-      <div class="contact-info-block">
-        <div class="contact-icon">📞</div>
-        <div>
-          <div class="contact-info-label">電話番号</div>
-          <div class="contact-info-value">000-0000-0000</div>
-        </div>
-      </div>
-      <div class="contact-info-block">
-        <div class="contact-icon">⏰</div>
-        <div>
-          <div class="contact-info-label">受付時間</div>
-          <div class="contact-info-value">平日 8:00〜17:00</div>
-        </div>
-      </div>
-      <div class="contact-info-block">
-        <div class="contact-icon">👨‍🏫</div>
-        <div>
-          <div class="contact-info-label">担任への連絡</div>
-          <div class="contact-info-value">松本 健太郎（職員室 内線 205）</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-form-side">
-      <p style="font-size:14px; color: var(--ink-light); margin-bottom: 0.5rem;">ご意見・ご質問はこちらのフォームからどうぞ。</p>
-      <div class="form-group">
-        <label class="form-label">お名前</label>
-        <input type="text" class="form-input" placeholder="山田 花子">
-      </div>
-      <div class="form-group">
-        <label class="form-label">メールアドレス</label>
-        <input type="email" class="form-input" placeholder="example@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">種別</label>
-        <select class="form-input">
-          <option>保護者</option>
-          <option>生徒</option>
-          <option>その他</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">メッセージ</label>
-        <textarea class="form-textarea" placeholder="ご質問・ご意見をご記入ください"></textarea>
-      </div>
-      <button class="btn-primary">送信する →</button>
-    </div>
-  </div>
-</section>
-
-<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-brand">
     <div class="footer-badge">J1B</div>
-    <span>1年B組 公式サイト · 2025年度</span>
+    <span>中学1年B組 公式サイト · 2025年度</span>
   </div>
-  <div>
-    〇〇市立〇〇中学校 · 担任: 松本 健太郎先生 · 学級委員長: 田中 葵
+  <div class="footer-links">
+    <a href="index.html">ホーム</a>
+    <a href="members.html">メンバー</a>
+    <a href="schedule.html">時間割</a>
+    <a href="news.html">お知らせ</a>
+    <a href="gallery.html">ギャラリー</a>
+    <a href="goals.html">目標</a>
+    <a href="contact.html">連絡先</a>
   </div>
 </footer>
 
 <script>
-  // Intersection Observer for scroll animations
-  const animEls = document.querySelectorAll('.anim');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationDelay = (i % 4) * 0.1 + 's';
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+// Countdown timer to 2025-06-01
+function updateCountdown() {
+  const target = new Date('2025-06-01T09:00:00');
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '00';
+    document.getElementById('cd-hours').textContent = '00';
+    document.getElementById('cd-mins').textContent = '00';
+    document.getElementById('cd-secs').textContent = '00';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
-  animEls.forEach(el => observer.observe(el));
-
-  // Smooth nav highlight
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current
-        ? 'var(--accent)' : '';
-    });
+// Scroll animations
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if (e.isIntersecting) {
+      e.target.style.animationDelay = (i % 4) * 0.08 + 's';
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
   });
-
-  // Form submit
-  document.querySelector('.btn-primary').addEventListener('click', () => {
-    alert('メッセージを送信しました。ありがとうございます！');
-  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
