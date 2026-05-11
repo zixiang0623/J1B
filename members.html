@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メンバー | J1B 中学1年B組</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── FILTER BAR ── */
+.filter-bar {
+  padding: 1.5rem 5rem;
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 10px; flex-wrap:wrap;
+  background: var(--white); position: sticky; top:60px; z-index:50;
+}
+.filter-label { font-size:12px; color:var(--ink-muted); margin-right:4px; }
+.filter-pill {
+  padding: 6px 14px; border-radius: 99px;
+  border: 0.5px solid var(--border-mid);
+  background: var(--white); font-family:var(--font-body);
+  font-size: 12px; color: var(--ink-light); cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-pill.active, .filter-pill:hover {
+  background: var(--ink); color: var(--white); border-color: var(--ink);
+}
+.search-input {
+  margin-left: auto; padding: 7px 14px;
+  border: 0.5px solid var(--border-mid); border-radius: 8px;
+  font-family: var(--font-body); font-size: 13px; color: var(--ink);
+  outline: none; width: 200px; transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--accent); }
+
+/* ── MEMBER GRID ── */
+.members-section { padding: 3rem 5rem 5rem; }
+.role-group { margin-bottom: 3.5rem; }
+.role-heading {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-muted);
+  padding-bottom: 12px; margin-bottom: 16px;
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.role-count {
+  display: inline-flex; align-items:center; justify-content:center;
+  width: 22px; height: 22px; border-radius: 99px;
+  background: var(--off-white); color: var(--ink-light);
+  font-family: var(--font-mono); font-size: 10px;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.member-card {
+  border: 0.5px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  background: var(--white);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: default; position: relative; overflow: hidden;
+}
+.member-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md); border-color: var(--accent-mid);
+}
+.member-card.officer {
+  background: linear-gradient(135deg, #f8fffa 0%, #ffffff 60%);
+  border-color: rgba(45,106,79,0.25);
+}
+
+.member-num {
+  position: absolute; top:12px; right:14px;
+  font-family: var(--font-mono); font-size:10px; color:var(--ink-muted);
+}
+.member-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 18px; font-weight: 700;
+  margin-bottom: 12px; flex-shrink: 0;
+}
+.member-name { font-size:15px; font-weight:500; margin-bottom:3px; }
+.member-name-yomi { font-size:10px; color:var(--ink-muted); letter-spacing:0.04em; margin-bottom:8px; }
+.member-role-badge {
+  display:inline-block; padding:3px 9px; border-radius:99px;
+  font-size:10px; font-weight:500; letter-spacing:0.05em;
+  margin-bottom:12px;
+}
+.member-divider { height:0.5px; background:var(--border); margin:12px 0; }
+.member-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; }
+.member-row-label { color:var(--ink-muted); }
+.member-row-value { font-weight:500; color:var(--ink-light); }
+.member-hobby-block { margin-top:10px; }
+.member-hobby-label { font-size:10px; color:var(--ink-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
+.member-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.member-tag {
+  padding:3px 8px; border-radius:4px; font-size:10px;
+  background:var(--off-white); color:var(--ink-light);
+  border: 0.5px solid var(--border);
+}
+
+/* color variants */
+.av-green { background:#e8f4ef; color:#2d6a4f; }
+.av-blue  { background:#e8f4ff; color:#1d5fa5; }
+.av-coral { background:#fdf0ec; color:#c05030; }
+.av-gold  { background:#fdf5dd; color:#8c6800; }
+.av-purple{ background:#f3eeff; color:#6930b8; }
+.av-pink  { background:#ffe8f4; color:#b8306a; }
+.av-sky   { background:#e8f9fe; color:#0080c0; }
+.av-teal  { background:#e0f8f2; color:#0a7a5a; }
+
+/* stats bar */
+.class-stats {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap:0; border:0.5px solid var(--border-mid);
+  border-radius:var(--radius-lg); overflow:hidden;
+  margin-bottom: 3rem;
+}
+.cs-cell {
+  padding:1.5rem; text-align:center;
+  border-right: 0.5px solid var(--border);
+}
+.cs-cell:last-child { border-right:none; }
+.cs-num { font-family:var(--font-mono); font-size:1.6rem; font-weight:700; color:var(--ink); }
+.cs-label { font-size:11px; color:var(--ink-muted); margin-top:4px; }
+
+/* hidden class */
+.member-card.hidden { display:none; }
+
+@media (max-width:900px) {
+  .filter-bar { padding:1rem 2rem; }
+  .members-section { padding:2rem; }
+  .class-stats { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-badge">J1B</div>
+    <span class="nav-title">1年B組 公式サイト</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="members.html" class="active">メンバー</a></li>
+    <li><a href="schedule.html">時間割・行事</a></li>
+    <li><a href="news.html">お知らせ</a></li>
+    <li><a href="gallery.html">ギャラリー</a></li>
+    <li><a href="goals.html">目標・担任</a></li>
+    <li><a href="contact.html">連絡先</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <p class="page-eyebrow">Class Members</p>
+  <h1 class="page-h1">クラスのみんな</h1>
+  <p class="page-lead">J1B の35人を紹介します。個性豊かなメンバーたちが、毎日を明るく彩っています。</p>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <span class="filter-label">絞り込み：</span>
+  <button class="filter-pill active" data-filter="all">全員</button>
+  <button class="filter-pill" data-filter="officer">学級役員</button>
+  <button class="filter-pill" data-filter="boys">男子</button>
+  <button class="filter-pill" data-filter="girls">女子</button>
+  <input type="text" class="search-input" placeholder="🔍 名前で検索…" id="searchInput">
+</div>
+
+<div class="members-section">
+
+  <!-- クラス統計 -->
+  <div class="class-stats anim">
+    <div class="cs-cell"><div class="cs-num">35</div><div class="cs-label">総人数</div></div>
+    <div class="cs-cell"><div class="cs-num">18</div><div class="cs-label">男子</div></div>
+    <div class="cs-cell"><div class="cs-num">17</div><div class="cs-label">女子</div></div>
+    <div class="cs-cell"><div class="cs-num">4</div><div class="cs-label">学級役員</div></div>
+    <div class="cs-cell"><div class="cs-num">12</div><div class="cs-label">委員会</div></div>
+  </div>
+
+  <!-- 学級役員 -->
+  <div class="role-group">
+    <div class="role-heading">🏛 学級役員 <span class="role-count">4</span></div>
+    <div class="members-grid">
+
+      <div class="member-card officer anim" data-group="officer" data-gender="girls" data-name="田中葵">
+        <span class="member-num">#01</span>
+        <div class="member-avatar av-green">田</div>
+        <div class="member-name">田中 葵</div>
+        <div class="member-name-yomi">たなか あおい</div>
+        <span class="member-role-badge badge badge-green">学級委員長</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">出身小学校</span><span class="member-row-value">〇〇小</span></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">バスケ部</span></div>
+        <div class="member-row"><span class="member-row-label">委員会</span><span class="member-row-value">学級委員</span></div>
+        <div class="member-hobby-block">
+          <div class="member-hobby-label">好きなこと</div>
+          <div class="member-tags">
+            <span class="member-tag">📚 読書</span>
+            <span class="member-tag">🏀 バスケ</span>
+            <span class="member-tag">🎵 ピアノ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="member-card officer anim" data-group="officer" data-gender="boys" data-name="佐藤蓮">
+        <span class="member-num">#02</span>
+        <div class="member-avatar av-blue">佐</div>
+        <div class="member-name">佐藤 蓮</div>
+        <div class="member-name-yomi">さとう れん</div>
+        <span class="member-role-badge badge badge-sky">副委員長</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">出身小学校</span><span class="member-row-value">△△小</span></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">ギター部</span></div>
+        <div class="member-row"><span class="member-row-label">委員会</span><span class="member-row-value">学級委員</span></div>
+        <div class="member-hobby-block">
+          <div class="member-hobby-label">好きなこと</div>
+          <div class="member-tags">
+            <span class="member-tag">🎸 ギター</span>
+            <span class="member-tag">🎬 映画</span>
+            <span class="member-tag">🎮 ゲーム</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="member-card officer anim" data-group="officer" data-gender="girls" data-name="鈴木陽菜">
+        <span class="member-num">#03</span>
+        <div class="member-avatar av-pink">鈴</div>
+        <div class="member-name">鈴木 陽菜</div>
+        <div class="member-name-yomi">すずき はるな</div>
+        <span class="member-role-badge badge badge-gray">書記</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">出身小学校</span><span class="member-row-value">□□小</span></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">美術部</span></div>
+        <div class="member-row"><span class="member-row-label">委員会</span><span class="member-row-value">美化委員</span></div>
+        <div class="member-hobby-block">
+          <div class="member-hobby-label">好きなこと</div>
+          <div class="member-tags">
+            <span class="member-tag">✏️ イラスト</span>
+            <span class="member-tag">🍳 料理</span>
+            <span class="member-tag">📸 写真</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="member-card officer anim" data-group="officer" data-gender="boys" data-name="高橋湊">
+        <span class="member-num">#04</span>
+        <div class="member-avatar av-purple">高</div>
+        <div class="member-name">高橋 湊</div>
+        <div class="member-name-yomi">たかはし みなと</div>
+        <span class="member-role-badge badge badge-gold">会計</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">出身小学校</span><span class="member-row-value">〇〇小</span></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">数学研究部</span></div>
+        <div class="member-row"><span class="member-row-label">委員会</span><span class="member-row-value">図書委員</span></div>
+        <div class="member-hobby-block">
+          <div class="member-hobby-label">好きなこと</div>
+          <div class="member-tags">
+            <span class="member-tag">🎮 ゲーム</span>
+            <span class="member-tag">📐 数学</span>
+            <span class="member-tag">♟️ 将棋</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 委員会メンバー -->
+  <div class="role-group">
+    <div class="role-heading">📋 委員会・係 <span class="role-count">12</span></div>
+    <div class="members-grid">
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="伊藤柚希">
+        <span class="member-num">#05</span>
+        <div class="member-avatar av-teal">伊</div>
+        <div class="member-name">伊藤 柚希</div>
+        <div class="member-name-yomi">いとう ゆずき</div>
+        <span class="member-role-badge badge badge-sky">体育委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">サッカー部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">⚽ サッカー</span><span class="member-tag">🏃 マラソン</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="渡辺さくら">
+        <span class="member-num">#06</span>
+        <div class="member-avatar av-pink">渡</div>
+        <div class="member-name">渡辺 さくら</div>
+        <div class="member-name-yomi">わたなべ さくら</div>
+        <span class="member-role-badge badge badge-gray">図書委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">文芸部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">📖 小説</span><span class="member-tag">🎹 ピアノ</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="山本颯太">
+        <span class="member-num">#07</span>
+        <div class="member-avatar av-blue">山</div>
+        <div class="member-name">山本 颯太</div>
+        <div class="member-name-yomi">やまもと そうた</div>
+        <span class="member-role-badge badge badge-green">保健委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">水泳部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🏊 水泳</span><span class="member-tag">🍳 料理</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="中村美桜">
+        <span class="member-num">#08</span>
+        <div class="member-avatar av-coral">中</div>
+        <div class="member-name">中村 美桜</div>
+        <div class="member-name-yomi">なかむら みお</div>
+        <span class="member-role-badge badge badge-gold">美化委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">ダンス部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🎨 絵画</span><span class="member-tag">💃 ダンス</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="小林悠真">
+        <span class="member-num">#09</span>
+        <div class="member-avatar av-gold">小</div>
+        <div class="member-name">小林 悠真</div>
+        <div class="member-name-yomi">こばやし ゆうま</div>
+        <span class="member-role-badge badge badge-coral">給食委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">軽音部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🥁 ドラム</span><span class="member-tag">🍳 料理</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="加藤結衣">
+        <span class="member-num">#10</span>
+        <div class="member-avatar av-sky">加</div>
+        <div class="member-name">加藤 結衣</div>
+        <div class="member-name-yomi">かとう ゆい</div>
+        <span class="member-role-badge badge badge-sky">放送委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">合唱部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🎤 歌</span><span class="member-tag">🎬 映画</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="吉田大翔">
+        <span class="member-num">#11</span>
+        <div class="member-avatar av-teal">吉</div>
+        <div class="member-name">吉田 大翔</div>
+        <div class="member-name-yomi">よしだ ひろと</div>
+        <span class="member-role-badge badge badge-gray">広報委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">バレー部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">📷 写真</span><span class="member-tag">🏐 バレー</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="山田詩音">
+        <span class="member-num">#12</span>
+        <div class="member-avatar av-purple">山</div>
+        <div class="member-name">山田 詩音</div>
+        <div class="member-name-yomi">やまだ しおん</div>
+        <span class="member-role-badge badge badge-green">文化委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">オーケストラ部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🎻 ヴァイオリン</span><span class="member-tag">📚 読書</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="松田健">
+        <span class="member-num">#13</span>
+        <div class="member-avatar av-blue">松</div>
+        <div class="member-name">松田 健</div>
+        <div class="member-name-yomi">まつだ けん</div>
+        <span class="member-role-badge badge badge-coral">環境委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">科学部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🔬 実験</span><span class="member-tag">🌿 植物</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="林彩乃">
+        <span class="member-num">#14</span>
+        <div class="member-avatar av-green">林</div>
+        <div class="member-name">林 彩乃</div>
+        <div class="member-name-yomi">はやし あやの</div>
+        <span class="member-role-badge badge badge-sky">生徒会代表</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">テニス部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🎾 テニス</span><span class="member-tag">✍️ 作文</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="木村蒼">
+        <span class="member-num">#15</span>
+        <div class="member-avatar av-coral">木</div>
+        <div class="member-name">木村 蒼</div>
+        <div class="member-name-yomi">きむら あお</div>
+        <span class="member-role-badge badge badge-gold">新聞委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">卓球部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🏓 卓球</span><span class="member-tag">✏️ 漫画</span></div>
+        </div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="石川ひより">
+        <span class="member-num">#16</span>
+        <div class="member-avatar av-pink">石</div>
+        <div class="member-name">石川 ひより</div>
+        <div class="member-name-yomi">いしかわ ひより</div>
+        <span class="member-role-badge badge badge-gray">給食委員</span>
+        <div class="member-divider"></div>
+        <div class="member-row"><span class="member-row-label">部活</span><span class="member-row-value">料理部</span></div>
+        <div class="member-hobby-block">
+          <div class="member-tags"><span class="member-tag">🍰 お菓子</span><span class="member-tag">🎨 手芸</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一般クラスメート -->
+  <div class="role-group">
+    <div class="role-heading">👤 その他クラスメート <span class="role-count">19</span></div>
+    <div class="members-grid">
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="川口拓海">
+        <span class="member-num">#17</span>
+        <div class="member-avatar av-blue">川</div>
+        <div class="member-name">川口 拓海</div>
+        <div class="member-name-yomi">かわぐち たくみ</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">野球部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">⚾ 野球</span><span class="member-tag">🎮 ゲーム</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="福田みのり">
+        <span class="member-num">#18</span>
+        <div class="member-avatar av-teal">福</div>
+        <div class="member-name">福田 みのり</div>
+        <div class="member-name-yomi">ふくだ みのり</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">バドミントン部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏸 バド</span><span class="member-tag">📚 読書</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="岡田悠斗">
+        <span class="member-num">#19</span>
+        <div class="member-avatar av-gold">岡</div>
+        <div class="member-name">岡田 悠斗</div>
+        <div class="member-name-yomi">おかだ ゆうと</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">バスケ部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏀 バスケ</span><span class="member-tag">🎵 音楽</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="長谷川莉子">
+        <span class="member-num">#20</span>
+        <div class="member-avatar av-purple">長</div>
+        <div class="member-name">長谷川 莉子</div>
+        <div class="member-name-yomi">はせがわ りこ</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">吹奏楽部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🎺 トランペット</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="村田瑛太">
+        <span class="member-num">#21</span>
+        <div class="member-avatar av-coral">村</div>
+        <div class="member-name">村田 瑛太</div>
+        <div class="member-name-yomi">むらた えいた</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">陸上部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏃 陸上</span><span class="member-tag">🎮 ゲーム</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="坂本花音">
+        <span class="member-num">#22</span>
+        <div class="member-avatar av-pink">坂</div>
+        <div class="member-name">坂本 花音</div>
+        <div class="member-name-yomi">さかもと かのん</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">合唱部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🎵 合唱</span><span class="member-tag">🎂 お菓子</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="清水涼">
+        <span class="member-num">#23</span>
+        <div class="member-avatar av-sky">清</div>
+        <div class="member-name">清水 涼</div>
+        <div class="member-name-yomi">しみず りょう</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">将棋部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">♟️ 将棋</span><span class="member-tag">📐 数学</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="西村あかり">
+        <span class="member-num">#24</span>
+        <div class="member-avatar av-green">西</div>
+        <div class="member-name">西村 あかり</div>
+        <div class="member-name-yomi">にしむら あかり</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">美術部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🖌️ 水彩画</span><span class="member-tag">📷 写真</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="藤原一樹">
+        <span class="member-num">#25</span>
+        <div class="member-avatar av-gold">藤</div>
+        <div class="member-name">藤原 一樹</div>
+        <div class="member-name-yomi">ふじわら かずき</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">テニス部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🎾 テニス</span><span class="member-tag">🎸 ギター</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="池田菜々">
+        <span class="member-num">#26</span>
+        <div class="member-avatar av-coral">池</div>
+        <div class="member-name">池田 菜々</div>
+        <div class="member-name-yomi">いけだ なな</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">ソフトボール部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🥎 ソフト</span><span class="member-tag">🍜 料理</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="橋本陸">
+        <span class="member-num">#27</span>
+        <div class="member-avatar av-blue">橋</div>
+        <div class="member-name">橋本 陸</div>
+        <div class="member-name-yomi">はしもと りく</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">サッカー部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">⚽ サッカー</span><span class="member-tag">🎮 ゲーム</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="岩田さな">
+        <span class="member-num">#28</span>
+        <div class="member-avatar av-teal">岩</div>
+        <div class="member-name">岩田 さな</div>
+        <div class="member-name-yomi">いわた さな</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">バレー部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏐 バレー</span><span class="member-tag">📖 漫画</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="前田颯">
+        <span class="member-num">#29</span>
+        <div class="member-avatar av-purple">前</div>
+        <div class="member-name">前田 颯</div>
+        <div class="member-name-yomi">まえだ はやて</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">バドミントン部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏸 バド</span><span class="member-tag">🎵 音楽</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="後藤ゆか">
+        <span class="member-num">#30</span>
+        <div class="member-avatar av-pink">後</div>
+        <div class="member-name">後藤 ゆか</div>
+        <div class="member-name-yomi">ごとう ゆか</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">科学部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🔭 天文</span><span class="member-tag">📚 読書</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="斉藤朔">
+        <span class="member-num">#31</span>
+        <div class="member-avatar av-coral">斉</div>
+        <div class="member-name">斉藤 朔</div>
+        <div class="member-name-yomi">さいとう さく</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">水泳部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏊 水泳</span><span class="member-tag">🎵 DTM</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="三浦琴音">
+        <span class="member-num">#32</span>
+        <div class="member-avatar av-gold">三</div>
+        <div class="member-name">三浦 琴音</div>
+        <div class="member-name-yomi">みうら ことね</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">吹奏楽部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🎷 サックス</span><span class="member-tag">🎨 絵</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="中島大地">
+        <span class="member-num">#33</span>
+        <div class="member-avatar av-sky">中</div>
+        <div class="member-name">中島 大地</div>
+        <div class="member-name-yomi">なかじま だいち</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">ラグビー部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏉 ラグビー</span><span class="member-tag">🎮 ゲーム</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="girls" data-name="上田莉奈">
+        <span class="member-num">#34</span>
+        <div class="member-avatar av-green">上</div>
+        <div class="member-name">上田 莉奈</div>
+        <div class="member-name-yomi">うえだ りな</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">陸上部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🏃 長距離</span><span class="member-tag">📸 写真</span></div></div>
+      </div>
+
+      <div class="member-card anim" data-group="students" data-gender="boys" data-name="野口颯一朗">
+        <span class="member-num">#35</span>
+        <div class="member-avatar av-purple">野</div>
+        <div class="member-name">野口 颯一朗</div>
+        <div class="member-name-yomi">のぐち そういちろう</div>
+        <div class="member-row" style="margin-top:8px;"><span class="member-row-label">部活</span><span class="member-row-value">軽音部</span></div>
+        <div class="member-hobby-block"><div class="member-tags"><span class="member-tag">🎸 ギター</span><span class="member-tag">🎵 作曲</span></div></div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /members-section -->
+
+<footer>
+  <div class="footer-brand">
+    <div class="footer-badge">J1B</div>
+    <span>中学1年B組 公式サイト · 2025年度</span>
+  </div>
+  <div class="footer-links">
+    <a href="index.html">ホーム</a>
+    <a href="members.html">メンバー</a>
+    <a href="schedule.html">時間割</a>
+    <a href="news.html">お知らせ</a>
+    <a href="gallery.html">ギャラリー</a>
+    <a href="goals.html">目標</a>
+    <a href="contact.html">連絡先</a>
+  </div>
+</footer>
+
+<script>
+// Filter
+const pills = document.querySelectorAll('.filter-pill');
+const cards = document.querySelectorAll('.member-card');
+const searchInput = document.getElementById('searchInput');
+let currentFilter = 'all';
+let searchTerm = '';
+
+function applyFilters() {
+  cards.forEach(card => {
+    const group = card.dataset.group;
+    const gender = card.dataset.gender;
+    const name = card.dataset.name || '';
+    let show = true;
+    if (currentFilter === 'officer' && group !== 'officer') show = false;
+    if (currentFilter === 'boys' && gender !== 'boys') show = false;
+    if (currentFilter === 'girls' && gender !== 'girls') show = false;
+    if (searchTerm && !name.includes(searchTerm)) show = false;
+    card.classList.toggle('hidden', !show);
+  });
+}
+
+pills.forEach(p => {
+  p.addEventListener('click', () => {
+    pills.forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    currentFilter = p.dataset.filter;
+    applyFilters();
+  });
+});
+
+searchInput.addEventListener('input', () => {
+  searchTerm = searchInput.value.replace(/\s/g, '');
+  applyFilters();
+});
+
+// Scroll anims
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.animationDelay = (i % 5) * 0.06 + 's';
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
