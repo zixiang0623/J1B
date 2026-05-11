@@ -2,35 +2,64 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>J1 Bクラス 応援サイト</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J1-B クラスページ</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; }
-        .team-list { list-style: none; padding: 0; }
-        .team-item { background: #fff; border: 1px solid #ddd; margin-bottom: 10px; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
-        .rank { font-weight: bold; color: #555; font-size: 1.2rem; }
-        .badge-relegation { background: #ff5252; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
-        p.info { font-size: 0.9rem; color: #666; }
+        :root { --primary-color: #4a90e2; --bg-color: #f0f4f8; }
+        body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: #333; }
+        .class-card { max-width: 800px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: var(--primary-color); color: white; padding: 40px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
+        .content { padding: 30px; }
+        .section { margin-bottom: 30px; border-left: 5px solid var(--primary-color); padding-left: 15px; }
+        h2 { margin-top: 0; color: var(--primary-color); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .info-box { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+        .announcement { background: #fff9db; padding: 15px; border-radius: 8px; border: 1px solid #fab005; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>J1リーグ：激闘のBクラス</h1>
-        <p>2024年シーズン、20チーム体制のJ1で熾烈な戦いを繰り広げる中位〜下位チームをピックアップ。</p>
-        
-        <ul class="team-list">
-            <li class="team-item"><span class="rank">11位〜</span> <span>サガン鳥栖 / 湘南ベルマーレ 等</span></li>
-            <li class="team-item"><span class="rank">下位3チーム</span> <span class="badge-relegation">J2自動降格圏</span></li>
-        </ul>
 
-        <div class="info">
-            <h3>📊 今シーズンのルール</h3>
-            <ul>
-                <li>全20クラブによるホーム＆アウェイ戦</li>
-                <li>下位3クラブ（18位・19位・20位）がJ2へ自動降格</li>
-            </ul>
+    <div class="class-card">
+        <div class="header">
+            <h1>J1-B クラスページ</h1>
+            <p>Team Spirit & Bright Future</p>
+        </div>
+
+        <div class="content">
+            <div class="announcement">
+                <strong>📢 お知らせ：</strong> 次の月曜日は、クラス写真の撮影があります！
+            </div>
+
+            <div class="section">
+                <h2>🌟 クラス目標</h2>
+                <p>「自分らしく、共に高め合う」</p>
+            </div>
+
+            <div class="grid">
+                <div class="info-box">
+                    <h3>📅 今週の予定</h3>
+                    <ul>
+                        <li>月：全校集会</li>
+                        <li>水：大掃除</li>
+                        <li>金：小テスト</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h3>📋 係・委員会</h3>
+                    <ul>
+                        <li>級長：佐藤</li>
+                        <li>美化：田中</li>
+                        <li>図書：鈴木</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; color: #999; font-size: 0.8rem;">
+                © 2024 J1-B Class Official Page
+            </div>
         </div>
     </div>
+
 </body>
 </html>
